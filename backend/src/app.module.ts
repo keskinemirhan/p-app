@@ -6,6 +6,7 @@ import { AccountModule } from './account/account.module';
 import { Account } from './account/entities/account.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { envSchema } from './env.validation';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [TypeOrmModule.forRootAsync({
@@ -23,6 +24,7 @@ import { envSchema } from './env.validation';
     })
   }),
     AccountModule,
+    MailerModule,
   ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: envSchema,
