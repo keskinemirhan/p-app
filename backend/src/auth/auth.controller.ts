@@ -11,6 +11,9 @@ import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { ResRegisterDto } from './dto/res-register.dto';
 import { ReqLoginDto } from './dto/req-login.dto';
 import { ResLoginDto } from './dto/res-login.dto';
+import { ResRefreshDto } from './dto/res-refresh.dto';
+import { ReqRefreshDto } from './dto/req-refresh.dto';
+import { bool } from 'joi';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -113,6 +116,22 @@ export class AuthController {
   async login(@Body() body: ReqLoginDto) {
     const res = await this.authService.login(body.email, body.password);
     return res;
+
+  }
+
+  @ApiCreatedResponse({
+    type: ResRefreshDto
+  })
+  @ApiBody({
+    type: ReqRefreshDto
+  })
+  @Post('refresh')
+  async refresh(@Body() body: ReqRefreshDto) {
+    const payload = await this.tokenService.verifyRefreshToken(body.refresh_token)
+    console.log(payload);
+    const account = await this.accountService.getOne({ id: payload.id });
+    const tokenPair = await this.authService.createSessionTokenPair(account.id);
+    return tokenPair;
 
   }
 

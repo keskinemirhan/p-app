@@ -2,10 +2,7 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { generateException } from "src/exception/exception";
 
-export type AuthTokenPayload = {
-  id: string;
-  type: "access" | "refresh";
-}
+
 
 
 
@@ -14,16 +11,13 @@ export class TokenService {
   constructor(private jwtService: JwtService) { }
 
 
-  async createRefreshToken(id: string) {
-    const payload = {
-      id,
-      type: "refresh"
-    }
+  async createRefreshToken(payload: any) {
+    payload.type = "refresh";
     const token = await this.jwtService.signAsync(payload, { expiresIn: "48h" });
     return token;
   }
 
-  async createAccessToken(payload: AuthTokenPayload) {
+  async createAccessToken(payload: any) {
     payload.type = "access";
     const token = await this.jwtService.signAsync(payload, { expiresIn: "30m" });
     return token
