@@ -9,6 +9,8 @@ import { generateException } from 'src/exception/exception';
 import { ConfigService } from '@nestjs/config';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { ResRegisterDto } from './dto/res-register.dto';
+import { ReqLoginDto } from './dto/req-login.dto';
+import { ResLoginDto } from './dto/res-login.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -99,6 +101,19 @@ export class AuthController {
       ...tokenPair,
       verificationId: verification.id,
     };
+  }
+
+  @ApiCreatedResponse({
+    type: ResLoginDto
+  })
+  @ApiBody({
+    type: ReqLoginDto
+  })
+  @Post('login')
+  async login(@Body() body: ReqLoginDto) {
+    const res = await this.authService.login(body.email, body.password);
+    return res;
+
   }
 
 }

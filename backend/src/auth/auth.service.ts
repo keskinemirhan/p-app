@@ -8,7 +8,6 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EmailVerification } from './entities/email-verification.entity';
 import { Repository } from 'typeorm';
-import { JwtService } from '@nestjs/jwt';
 
 export type EmailVerificationPayload = {
   verificationId: string;
@@ -28,7 +27,6 @@ export class AuthService {
     private configService: ConfigService,
     @InjectRepository(EmailVerification)
     private verificationRepo: Repository<EmailVerification>,
-    private jwtService: JwtService,
   ) {
     this.appEmailAddress = this.configService.get<string>('APP_EMAIL');
   }
