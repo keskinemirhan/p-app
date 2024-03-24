@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountModule } from './account/account.module';
 import { Account } from './account/entities/account.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { envSchema } from './env.validation';
 import { MailerModule } from './mailer/mailer.module';
+import { AuthModule } from './auth/auth.module';
+import { EmailVerification } from './auth/entities/email-verification.entity';
 
 @Module({
   imports: [TypeOrmModule.forRootAsync({
@@ -20,9 +20,10 @@ import { MailerModule } from './mailer/mailer.module';
       port: configService.get("DB_PORT"),
       synchronize: configService.get("DB_SYNCHRONIZE"),
       host: configService.get("DB_HOST"),
-      entities: [Account],
+      entities: [Account, EmailVerification],
     })
   }),
+    AuthModule,
     AccountModule,
     MailerModule,
   ConfigModule.forRoot({
@@ -34,7 +35,7 @@ import { MailerModule } from './mailer/mailer.module';
     }
   }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule { }

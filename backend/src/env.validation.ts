@@ -16,4 +16,8 @@ export const envSchema = Joi.object({
   APP_HOST: Joi.string().default("localhost"),
   APP_PORT: Joi.number().port().default(3000),
   JWT_SECRET: Joi.string().default("secret"),
+  APP_EMAIL: Joi.string().email().required(),
+  APP_NAME: Joi.string().default("Portfolio App"),
+  APP_DESCRIPTION: Joi.string().default("Portfolio app for"),
+  VERIFICATION_EXP_SEC: Joi.number().default(180),
 });

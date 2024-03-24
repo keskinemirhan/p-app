@@ -12,7 +12,7 @@ export class QueryService<T> {
   }
 
   async getOne(where: FindOptionsWhere<T>) {
-    const item = await this.repo.findOne(where);
+    const item = await this.repo.findOne({ where });
     if (!item) throw new NotFoundException(this.notFoundCode);
     return item;
   }

@@ -20,16 +20,17 @@ export class AccountService extends QueryService<Account> {
       model.password = hashedPassword;
     }
 
-    if (model.email) {
-      const foundAccount = await this.accountRepo.findOne({ where: { email: model.email } });
-      if (foundAccount) throw new BadRequestException(generateException("EMAIL_EXISTS"));
-    }
+
     return model;
   }
 
 
   async create(model: Partial<Account>) {
     model = await this.modelCheck(model)
+    if (model.email) {
+      const foundAccount = await this.accountRepo.findOne({ where: { email: model.email } });
+      if (foundAccount) throw new BadRequestException(generateException("EMAIL_EXISTS"));
+    }
     const account = this.accountRepo.create(model);
     return this.accountRepo.save(account);
   }
