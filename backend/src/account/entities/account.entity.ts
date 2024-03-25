@@ -17,6 +17,9 @@ export class Account {
   @Column()
   surname: string;
 
-  @Column( { default: false } )
+  @Column({ default: false })
   isEmailVerified: boolean;
+
+  @Column({ default: false })
+  isAdmin: boolean;
 }
