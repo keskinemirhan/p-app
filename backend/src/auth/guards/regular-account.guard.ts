@@ -20,6 +20,7 @@ export class RegularAccountGuard implements CanActivate {
       const payload = await this.tokenService.verifyAccessToken(token);
       if (!payload.id) throw new BadRequestException("UNAUTHORIZED");
       const account = await this.accountService.getOne({ id: payload.id });
+      if (!account.isEmailVerified) throw new UnauthorizedException(generateException("UNAUTHORIZED"));
       request.account = account;
     } catch {
       throw new UnauthorizedException(generateException("UNAUTHORIZED"));
