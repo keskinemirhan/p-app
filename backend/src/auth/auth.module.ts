@@ -8,6 +8,8 @@ import { AuthController } from "./auth.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { EmailVerification } from "./entities/email-verification.entity";
 import { MailerModule } from "src/mailer/mailer.module";
+import { AdminAccountGuard } from "./guards/admin-account.guard";
+import { RegularAccountGuard } from "./guards/regular-account.guard";
 
 @Module({
   imports: [
@@ -23,7 +25,8 @@ import { MailerModule } from "src/mailer/mailer.module";
     }),
     TypeOrmModule.forFeature([EmailVerification]),
   ],
-  providers: [AuthService, TokenService],
+  providers: [AuthService, TokenService, AdminAccountGuard, RegularAccountGuard],
+  exports: [AdminAccountGuard, RegularAccountGuard, AuthService, TokenService],
   controllers: [AuthController],
 
 })
