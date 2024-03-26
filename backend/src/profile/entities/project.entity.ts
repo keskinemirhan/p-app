@@ -1,10 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Profile } from "./profile.entity";
+import { Column, Entity } from "typeorm";
+import { BaseAttribute } from "./base-attr.entity";
 
 @Entity()
-export class Project {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Project extends BaseAttribute {
 
   @Column()
   name: string;
@@ -17,9 +15,6 @@ export class Project {
 
   @Column()
   isParticipatingNow: boolean;
-
-  @ManyToOne(() => Profile, (profile) => profile.projects)
-  profile: Profile;
 
 
 }

@@ -1,12 +1,10 @@
 import { Account } from "src/account/entities/account.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "./profile.entity";
+import { BaseAttribute } from "./base-attr.entity";
 
 @Entity()
-export class Reference {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
+export class Reference extends BaseAttribute {
   @Column({ nullable: true })
   name: string;
 
@@ -19,10 +17,5 @@ export class Reference {
   @ManyToOne(() => Account)
   @JoinColumn()
   referenceAccount: Account;
-
-  @ManyToOne(() => Profile, (profile) => profile.experiences)
-  profile: Profile;
-
-
 }
 

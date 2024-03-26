@@ -1,11 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "./profile.entity";
+import { BaseAttribute } from "./base-attr.entity";
 
 @Entity()
-export class Experience {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
+export class Experience extends BaseAttribute {
   @Column()
   companyName: string;
 
@@ -17,9 +15,6 @@ export class Experience {
 
   @Column({ type: "date", nullable: true })
   endDate: Date;
-
-  @ManyToOne(() => Profile, (profile) => profile.experiences)
-  profile: Profile;
 
 
 }

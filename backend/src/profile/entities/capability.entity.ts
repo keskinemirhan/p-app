@@ -1,15 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "./profile.entity";
+import { BaseAttribute } from "./base-attr.entity";
 
 @Entity()
-export class Capability {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
+export class Capability extends BaseAttribute{
   @Column()
   name: string;
-
-  @ManyToOne(() => Profile, (profile) => profile.capabilities)
-  profile: Profile;
-
 }

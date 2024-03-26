@@ -9,7 +9,6 @@ import { AuthModule } from './auth/auth.module';
 import { EmailVerification } from './auth/entities/email-verification.entity';
 import { ProfileModule } from './profile/profile.module';
 import { Capability } from './profile/entities/capability.entity';
-import { ContactInfo } from './profile/entities/contact-info.entity';
 import { Education } from './profile/entities/education.entity';
 import { Experience } from './profile/entities/experience.entity';
 import { Profile } from './profile/entities/profile.entity';
@@ -29,7 +28,7 @@ import { Review } from './profile/entities/review.entity';
       port: configService.get("DB_PORT"),
       synchronize: configService.get("DB_SYNCHRONIZE"),
       host: configService.get("DB_HOST"),
-      entities: [Account, EmailVerification, Capability, ContactInfo, Education, Experience, Profile, Project, Reference, Review],
+      entities: [Account, EmailVerification, Capability, Education, Experience, Profile, Project, Reference, Review],
     })
   }),
     AuthModule,
