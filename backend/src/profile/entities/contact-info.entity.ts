@@ -1,5 +1,4 @@
-import { Account } from "src/account/entities/account.entity";
-import { Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne , PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "./profile.entity";
 
 @Entity()
@@ -15,4 +14,5 @@ export class ContactInfo {
 
   @Column({ nullable: true })
   phoneNumber: string;
+
 }

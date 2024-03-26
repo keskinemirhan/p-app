@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "./profile.entity";
-import { profile } from "console";
 
 @Entity()
 export class Capability {
