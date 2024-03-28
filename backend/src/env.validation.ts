@@ -20,4 +20,5 @@ export const envSchema = Joi.object({
   APP_NAME: Joi.string().default("Portfolio App"),
   APP_DESCRIPTION: Joi.string().default("Portfolio app for"),
   VERIFICATION_EXP_SEC: Joi.number().default(180),
+  ENVIRONMENT: Joi.string().valid('development', 'production', 'provision')
 });
