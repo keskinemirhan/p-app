@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Account } from "./entities/account.entity";
@@ -9,36 +9,41 @@ import { QueryService } from "src/model/query-service";
 
 
 @Injectable()
-export class AccountService extends QueryService<Account> {
+export class AccountService extends QueryService<Account> implements OnModuleInit {
   constructor(@InjectRepository(Account) private accountRepo: Repository<Account>) {
     super(accountRepo, "ACC_NOT_FOUND");
   }
+  async onModuleInit() {
+    try {
+      await this.getOne({ email: "admin@admin.com" });
+    } catch {
+      await this.create({ email: "admin@admin.com", password: "admin" })
 
-  private async modelCheck(model: Partial<Account>): Promise<Partial<Account>> {
-    if (model.password) {
-      const hashedPassword = await hash(model.password, 10);
-      model.password = hashedPassword;
     }
-
-
-    return model;
   }
 
 
+
   async create(model: Partial<Account>) {
-    model = await this.modelCheck(model)
+    
     if (model.email) {
       const foundAccount = await this.accountRepo.findOne({ where: { email: model.email } });
       if (foundAccount) throw new BadRequestException(generateException("EMAIL_EXISTS"));
+    }
+    if (model.password) {
+      model.password = await hash(model.password, 10);
     }
     const account = this.accountRepo.create(model);
     return this.accountRepo.save(account);
   }
 
   async update(id: string, model: Partial<Account>) {
-    model = await this.modelCheck(model);
     const account = await this.accountRepo.findOne({ where: { id } });
+    if (model.password && model.password !== account.password) {
+      account.password = await hash(model.password, 10);
+    } 
     if (!account) throw new NotFoundException(generateException("ACC_NOT_FOUND"));
+    model.id = id;
     const updated = await this.accountRepo.save(model)
     return updated;
   }
