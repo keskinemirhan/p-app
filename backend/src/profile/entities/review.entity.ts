@@ -8,10 +8,10 @@ export class Review {
   id: string;
 
   @ManyToOne(() => Profile, { onDelete: "CASCADE" })
-  createdBy: Profile;
+  author: Profile;
 
   @ManyToOne(() => Profile, { onDelete: "CASCADE" })
-  to: Profile;
+  target: Profile;
 
   @Column()
   reviewText: string;

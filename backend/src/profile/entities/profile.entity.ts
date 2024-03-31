@@ -18,20 +18,23 @@ export class Profile {
   @Column()
   surname: string;
 
-  @Column()
+  @Column({ nullable: true })
   contactEmail: string;
 
-  @Column()
+  @Column({ default: "" })
   description: string;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   collaborativeRating: number;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   skillRating: number;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   communicativeRating: number;
+
+  @Column({ default: 0 })
+  reviewCount: number;
 
   @OneToOne(() => Account, (account) => account.profile, { onDelete: "CASCADE" })
   account: Account;
@@ -51,9 +54,9 @@ export class Profile {
   @OneToMany(() => Reference, (reference) => reference.profile, { cascade: true })
   references: Reference[];
 
-  @OneToMany(() => Review, (review) => review.createdBy, { cascade: true })
+  @OneToMany(() => Review, (review) => review.author, { cascade: true })
   authoredReviews: Review[];
 
-  @OneToMany(() => Review, (review) => review.createdBy, { cascade: true })
+  @OneToMany(() => Review, (review) => review.target, { cascade: true })
   targetReviews: Review[];
 }  
