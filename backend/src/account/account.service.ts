@@ -17,7 +17,7 @@ export class AccountService extends QueryService<Account> implements OnModuleIni
     try {
       await this.getOne({ email: "admin@admin.com" });
     } catch {
-      await this.create({ email: "admin@admin.com", password: "admin" })
+      await this.create({ email: "admin@admin.com", password: "admin", isEmailVerified: true, isAdmin: true })
 
     }
   }
