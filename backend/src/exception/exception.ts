@@ -12,6 +12,7 @@ export const exceptionCodes = {
   "VERIFICATION_EXPIRED": "Verification expired",
   "ALREADY_VERIFIED": "Email has been verified already",
   "UNAUTHORIZED": "Can not access this endpoint",
+  "PROFILE_NOT_FOUND": "Profile not found",
 } as const;
 
 interface ClientException {
