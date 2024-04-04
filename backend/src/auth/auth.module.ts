@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { AccountModule } from "src/account/account.module";
@@ -10,11 +10,13 @@ import { EmailVerification } from "./entities/email-verification.entity";
 import { MailerModule } from "src/mailer/mailer.module";
 import { AdminAccountGuard } from "./guards/admin-account.guard";
 import { RegularAccountGuard } from "./guards/regular-account.guard";
+import { ProfileModule } from "src/profile/profile.module";
 
 @Module({
   imports: [
     MailerModule,
-    AccountModule,
+    forwardRef(() => AccountModule),
+    ProfileModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

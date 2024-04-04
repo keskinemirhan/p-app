@@ -13,7 +13,7 @@ import { ReqLoginDto } from './dto/req-login.dto';
 import { ResLoginDto } from './dto/res-login.dto';
 import { ResRefreshDto } from './dto/res-refresh.dto';
 import { ReqRefreshDto } from './dto/req-refresh.dto';
-import { bool } from 'joi';
+import { ProfileService } from 'src/profile/profile.service';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -24,6 +24,7 @@ export class AuthController {
     private authService: AuthService,
     private tokenService: TokenService,
     private configService: ConfigService,
+    private profileService: ProfileService
   ) {
     this.verificationExpireSeconds = this.configService.get<number>("VERIFICATION_EXP_SEC");
   }
@@ -37,9 +38,18 @@ export class AuthController {
   @Post('register')
   async register(@Body() body: ReqRegisterDto) {
     const account = await this.accountService.create({
-      ...body,
+      email: body.email,
+      password: body.password,
       isEmailVerified: false,
     });
+    const profile = await this.profileService.create({
+      name: body.name,
+      surname: body.surname,
+    })
+    account.profile = profile;
+    await this.accountService.update(account.id, account);
+
+
     const verification = await this.authService.sendRegisterVerification(
       body.email,
       account.id,
@@ -128,7 +138,6 @@ export class AuthController {
   @Post('refresh')
   async refresh(@Body() body: ReqRefreshDto) {
     const payload = await this.tokenService.verifyRefreshToken(body.refresh_token)
-    console.log(payload);
     const account = await this.accountService.getOne({ id: payload.id });
     const tokenPair = await this.authService.createSessionTokenPair(account.id);
     return tokenPair;
