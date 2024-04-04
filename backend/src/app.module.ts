@@ -15,7 +15,6 @@ import { Profile } from './profile/entities/profile.entity';
 import { Project } from './profile/entities/project.entity';
 import { Reference } from './profile/entities/reference.entity';
 import { Review } from './profile/entities/review.entity';
-import { MVCModule } from './mvc/mvc.module';
 
 @Module({
   imports: [TypeOrmModule.forRootAsync({
@@ -36,7 +35,6 @@ import { MVCModule } from './mvc/mvc.module';
     AccountModule,
     MailerModule,
     ProfileModule,
-    MVCModule,
   ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: envSchema,
