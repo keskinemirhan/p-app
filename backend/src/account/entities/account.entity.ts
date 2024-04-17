@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude, Expose } from "class-transformer";
 import { Profile } from "src/profile/entities/profile.entity";
-import { Column, Entity, IsNull, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Account {
@@ -18,6 +18,12 @@ export class Account {
   @Column()
   password: string;
 
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
 
   @ApiProperty()
   @Column({ default: false })
@@ -28,10 +34,8 @@ export class Account {
   @Column({ default: false })
   isAdmin: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ type: () => Profile })
   @OneToOne(() => Profile, (profile) => profile.account)
   @JoinColumn()
   profile: Profile;
-
-
 }

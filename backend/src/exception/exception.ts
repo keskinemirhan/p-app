@@ -11,6 +11,7 @@ export const exceptionCodes = {
   "INVALID_VERIFICATION_CODE": "Verification code invalid",
   "VERIFICATION_EXPIRED": "Verification expired",
   "ALREADY_VERIFIED": "Email has been verified already",
+  "UNVERIFIED_ACCOUNT": "Your account should be verified",
   "UNAUTHORIZED": "Can not access this endpoint",
   "PROFILE_NOT_FOUND": "Profile not found",
 } as const;

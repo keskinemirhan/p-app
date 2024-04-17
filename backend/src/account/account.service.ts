@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Like, Repository } from "typeorm";
 import { Account } from "./entities/account.entity";
 import { hash } from "bcrypt";
 import { generateException } from "src/exception/exception";
@@ -25,7 +25,7 @@ export class AccountService extends QueryService<Account> implements OnModuleIni
 
 
   async create(model: Partial<Account>) {
-    
+
     if (model.email) {
       const foundAccount = await this.accountRepo.findOne({ where: { email: model.email } });
       if (foundAccount) throw new BadRequestException(generateException("EMAIL_EXISTS"));
@@ -39,13 +39,17 @@ export class AccountService extends QueryService<Account> implements OnModuleIni
 
   async update(id: string, model: Partial<Account>) {
     const account = await this.accountRepo.findOne({ where: { id } });
+    if (model.email && model.email !== account.email) {
+      const existingEmail = await this.accountRepo.findOne({ where: { email: model.email } });
+      if (existingEmail) throw new BadRequestException(generateException("EMAIL_EXISTS"));
+    }
     if (model.password && model.password !== account.password) {
       account.password = await hash(model.password, 10);
-    } 
+    }
     if (!account) throw new NotFoundException(generateException("ACC_NOT_FOUND"));
     model.id = id;
     const updated = await this.accountRepo.save(model)
-    return updated;
+    return this.accountRepo.findOne({ where: { id: updated.id } });
   }
 
   async delete(id: string) {
