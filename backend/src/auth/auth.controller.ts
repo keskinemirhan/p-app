@@ -45,6 +45,7 @@ export class AuthController {
     const profile = await this.profileService.create({
       name: body.name,
       surname: body.surname,
+      birthDate: new Date(body.birthDate),
     })
     account.profile = profile;
     await this.accountService.update(account.id, account);

@@ -34,29 +34,35 @@ export class Profile {
   communicativeRating: number;
 
   @Column({ default: 0 })
+  overallRating: number;
+
+  @Column({ default: 0 })
   reviewCount: number;
+
+  @Column()
+  birthDate: Date;
 
   @OneToOne(() => Account, (account) => account.profile, { onDelete: "CASCADE" })
   account: Account;
 
-  @OneToMany(() => Education, (education) => education.profile, { cascade: true })
+  @OneToMany(() => Education, (education) => education.profile)
   educations: Education[];
 
-  @OneToMany(() => Capability, (capability) => capability.profile, { cascade: true })
+  @OneToMany(() => Capability, (capability) => capability.profile,)
   capabilities: Capability[];
 
-  @OneToMany(() => Experience, (experience) => experience.profile, { cascade: true })
+  @OneToMany(() => Experience, (experience) => experience.profile)
   experiences: Experience[];
 
-  @OneToMany(() => Project, (project) => project.profile, { cascade: true })
+  @OneToMany(() => Project, (project) => project.profile)
   projects: Project[];
 
-  @OneToMany(() => Reference, (reference) => reference.profile, { cascade: true })
+  @OneToMany(() => Reference, (reference) => reference.profile)
   references: Reference[];
 
-  @OneToMany(() => Review, (review) => review.author, { cascade: true })
+  @OneToMany(() => Review, (review) => review.author)
   authoredReviews: Review[];
 
-  @OneToMany(() => Review, (review) => review.target, { cascade: true })
+  @OneToMany(() => Review, (review) => review.target)
   targetReviews: Review[];
 }  

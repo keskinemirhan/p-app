@@ -16,7 +16,7 @@ import { ProfileModule } from "src/profile/profile.module";
   imports: [
     MailerModule,
     forwardRef(() => AccountModule),
-    ProfileModule,
+    forwardRef(() => ProfileModule),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

@@ -10,7 +10,7 @@ import { ProfileModule } from "src/profile/profile.module";
   imports: [
     TypeOrmModule.forFeature([Account]),
     forwardRef(() => AuthModule),
-    ProfileModule,
+    forwardRef(() => ProfileModule),
   ],
   providers: [AccountService],
   exports: [AccountService],
