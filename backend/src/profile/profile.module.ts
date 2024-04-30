@@ -12,6 +12,9 @@ import { EducationService } from "./service/education.service";
 import { EducationController } from "./controller/education.controller";
 import { AuthModule } from "src/auth/auth.module";
 import { AccountModule } from "src/account/account.module";
+import { ExperienceController } from "./controller/experience.controller";
+import { ExperienceService } from "./service/experience.service";
+import { ProfileController } from "./controller/profile.controller";
 
 @Module({
   imports: [
@@ -19,8 +22,8 @@ import { AccountModule } from "src/account/account.module";
     forwardRef(() => AuthModule),
     forwardRef(() => AccountModule),
   ],
-  providers: [ProfileService, EducationService],
-  controllers: [EducationController],
+  providers: [ProfileService, EducationService, ExperienceService],
+  controllers: [ProfileController,EducationController, ExperienceController],
   exports: [ProfileService]
 
 
