@@ -15,6 +15,8 @@ import { AccountModule } from "src/account/account.module";
 import { ExperienceController } from "./controller/experience.controller";
 import { ExperienceService } from "./service/experience.service";
 import { ProfileController } from "./controller/profile.controller";
+import { CapabilityService } from "./service/capability.service";
+import { CapabilityController } from "./controller/capability.controller";
 
 @Module({
   imports: [
@@ -22,8 +24,8 @@ import { ProfileController } from "./controller/profile.controller";
     forwardRef(() => AuthModule),
     forwardRef(() => AccountModule),
   ],
-  providers: [ProfileService, EducationService, ExperienceService],
-  controllers: [ProfileController,EducationController, ExperienceController],
+  providers: [ProfileService, EducationService, ExperienceService, CapabilityService],
+  controllers: [ProfileController, EducationController, ExperienceController, CapabilityController],
   exports: [ProfileService]
 
 

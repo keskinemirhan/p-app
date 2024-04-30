@@ -16,6 +16,7 @@ export const exceptionCodes = {
   "PROFILE_NOT_FOUND": "Profile not found",
   "EDUCATION_NOT_FOUND": "Education Not Found",
   "EXPERIENCE_NOT_FOUND": "Experience Not Found",
+  "CAPABILITY_NOT_FOUND": "Experience Not Found",
 } as const;
 
 interface ClientException {
