@@ -56,7 +56,7 @@ export class ExperienceController {
   })
   @Role("account")
   @Delete(":id")
-  async deleteEducation(@Param("id") id: string, @CurrentAccount() account: Account) {
+  async deleteExperience(@Param("id") id: string, @CurrentAccount() account: Account) {
     const control = isUUID(id);
     if (!control) throw new NotFoundException(generateException("EXPERIENCE_NOT_FOUND"));
     const profile = await this.profileService.getOne({ account: { id: account.id } });
