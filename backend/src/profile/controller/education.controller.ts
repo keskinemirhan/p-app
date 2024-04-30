@@ -8,11 +8,21 @@ import { CurrentAccount } from "src/auth/decorators/account.decorator";
 import { Account } from "src/account/entities/account.entity";
 import { isUUID } from "class-validator";
 import { generateException } from "src/exception/exception";
+import { ApiBody, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ResGetallEducation } from "../dto/res-getall-education.dto";
+import { Education } from "../entities/education.entity";
 
+@ApiTags("Education")
 @Controller("education")
 export class EducationController {
   constructor(private educationService: EducationService, private profileService: ProfileService) { }
 
+  @ApiResponse({
+    type: ResGetallEducation
+  })
+  @ApiBody({
+   type: ReqGetallAttr,
+  })
   @Role("account")
   @Get()
   async getEducationsByProfile(@Body() reqGetallAttr: ReqGetallAttr) {
@@ -21,6 +31,12 @@ export class EducationController {
     return accounts;
   }
 
+  @ApiResponse({
+    type: Education,
+  })
+  @ApiBody({
+    type: ReqAddEducation,
+  })
   @Role("account")
   @Post()
   async addEducation(@Body() reqAddEducation: ReqAddEducation, @CurrentAccount() account: Account) {
@@ -30,6 +46,13 @@ export class EducationController {
     return this.educationService.getOne({ id: education.id });
   }
 
+  @ApiResponse({
+    type: Education,
+  })
+  @ApiParam({
+    name: "id",
+    format: "UUID",
+  })
   @Role("account")
   @Delete(":id")
   async deleteEducation(@Param("id") id: string, @CurrentAccount() account: Account) {
