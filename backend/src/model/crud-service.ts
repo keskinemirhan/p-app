@@ -1,7 +1,12 @@
-import { DeepPartial, FindOptionsWhere } from "typeorm";
+import { DeepPartial, FindOptionsWhere, Repository } from "typeorm";
 import { QueryService } from "./query-service";
+import { ExceptionCode } from "src/exception/exception";
 
 export class CrudService<T> extends QueryService<T> {
+
+  constructor(repo: Repository<T>, notFoundCode: ExceptionCode) {
+    super(repo, notFoundCode);
+  }
 
   async update(where: FindOptionsWhere<T>, model: DeepPartial<T>) {
     const entity = await this.getOne(where);

@@ -14,6 +14,7 @@ export const exceptionCodes = {
   "UNVERIFIED_ACCOUNT": "Your account should be verified",
   "UNAUTHORIZED": "Can not access this endpoint",
   "PROFILE_NOT_FOUND": "Profile not found",
+  "EDUCATION_NOT_FOUND": "Education Not Found",
 } as const;
 
 interface ClientException {
