@@ -9,7 +9,7 @@ import { Review } from "./review.entity";
 
 @Entity()
 export class Profile {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
