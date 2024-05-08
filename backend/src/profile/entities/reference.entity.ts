@@ -6,7 +6,7 @@ import { ApiProperty } from "@nestjs/swagger";
 @Entity()
 export class Reference extends BaseAttribute {
   @ApiProperty({ type: Profile })
-  @ManyToOne(() => Profile, { onDelete: "CASCADE" })
+  @ManyToOne(() => Profile, { onDelete: "CASCADE", eager: true })
   @JoinColumn()
   referenceProfile: Profile;
 }
