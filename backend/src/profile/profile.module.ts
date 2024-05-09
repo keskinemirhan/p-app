@@ -19,6 +19,8 @@ import { CapabilityService } from "./service/capability.service";
 import { CapabilityController } from "./controller/capability.controller";
 import { ProjectController } from "./controller/project.controller";
 import { ProjectService } from "./service/project.service";
+import { ReferenceService } from "./service/reference.service";
+import { ReferenceController } from "./controller/reference.controller";
 
 @Module({
   imports: [
@@ -26,8 +28,8 @@ import { ProjectService } from "./service/project.service";
     forwardRef(() => AuthModule),
     forwardRef(() => AccountModule),
   ],
-  providers: [ProfileService, EducationService, ExperienceService, CapabilityService, ProjectService],
-  controllers: [ProfileController, EducationController, ExperienceController, CapabilityController, ProjectController],
+  providers: [ProfileService, EducationService, ExperienceService, CapabilityService, ProjectService, ReferenceService],
+  controllers: [ProfileController, EducationController, ExperienceController, CapabilityController, ProjectController, ReferenceController],
   exports: [ProfileService]
 
 

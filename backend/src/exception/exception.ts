@@ -18,7 +18,8 @@ export const exceptionCodes = {
   "EXPERIENCE_NOT_FOUND": "Experience Not Found",
   "CAPABILITY_NOT_FOUND": "Experience Not Found",
   "PROJECT_NOT_FOUND": "Project not found",
-  "REFERENCE_NOT_FOUND": "Reference not found"
+  "REFERENCE_NOT_FOUND": "Reference not found",
+  "CANNOT_REFERENCE_ITSELF": "Cannot reference same profile"
 } as const;
 
 interface ClientException {
