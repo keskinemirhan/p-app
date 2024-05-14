@@ -1,5 +1,3 @@
-import { required } from "joi";
-import { join } from "path";
 import { Account } from "src/account/entities/account.entity";
 import { EmailVerification } from "src/auth/entities/email-verification.entity";
 import { Capability } from "src/profile/entities/capability.entity";

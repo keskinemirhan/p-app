@@ -24,19 +24,18 @@ export class Profile {
   @Column({ default: "" })
   description: string;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: "float" })
   collaborativeRating: number;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: "float" })
   skillRating: number;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: "float" })
   communicativeRating: number;
-
-  @Column({ default: 0 })
+  @Column({ default: 0, type: "float" })
   overallRating: number;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: "int" })
   reviewCount: number;
 
   @Column()

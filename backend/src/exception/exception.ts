@@ -19,7 +19,10 @@ export const exceptionCodes = {
   "CAPABILITY_NOT_FOUND": "Experience Not Found",
   "PROJECT_NOT_FOUND": "Project not found",
   "REFERENCE_NOT_FOUND": "Reference not found",
-  "CANNOT_REFERENCE_ITSELF": "Cannot reference same profile"
+  "CANNOT_REFERENCE_ITSELF": "Cannot reference same profile",
+  "REVIEW_NOT_FOUND": "Review not found",
+  "CANNOT_REVIEW_ITSELF": "Cannot review owned profile",
+  "CANNOT_REVIEW_TWICE": "Cannot review same profile twice",
 } as const;
 
 interface ClientException {
