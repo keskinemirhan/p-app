@@ -3,9 +3,13 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { readFileSync } from 'fs';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const key = readFileSync("/ssl/key.pem");
+  const cert = readFileSync("/ssl/cert.pem");
+
+  const app = await NestFactory.create(AppModule, key && cert ? { httpsOptions: { key, cert } } : undefined);
 
   app.useGlobalPipes(
     new ValidationPipe({
