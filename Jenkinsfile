@@ -20,7 +20,7 @@ pipeline {
     }
     stage("Build and Run") {
       steps {
-        "run nest" : {
+        "run nest": {
           dir("backend") {
             bat "npm install"
             bat "npm start"
