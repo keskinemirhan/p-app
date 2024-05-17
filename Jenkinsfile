@@ -21,8 +21,9 @@ pipeline {
     stage("Build and Run") {
       steps {
           dir("backend") {
-            bash "npm install"
-            bash "npm start"
+            bash '''#!/bin/bash
+              npm install && npm start
+            '''
         }
       }
     }
