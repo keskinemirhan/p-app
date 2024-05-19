@@ -13,7 +13,7 @@ export const envSchema = Joi.object({
   SMTP_TLS: Joi.boolean().default(false),
   SMTP_USERNAME: Joi.string().required(),
   SMTP_PASSWORD: Joi.string().required(),
-  APP_HOST: Joi.string().default("localhost"),
+  APP_HOSTNAME: Joi.string().default("localhost"),
   APP_PORT: Joi.number().port().default(3000),
   JWT_SECRET: Joi.string().default("secret"),
   APP_EMAIL: Joi.string().email().required(),

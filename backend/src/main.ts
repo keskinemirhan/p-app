@@ -1,15 +1,21 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { ValidationPipe } from '@nestjs/common';
+import { NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { readFileSync } from 'fs';
 
 async function bootstrap() {
-  const key = readFileSync("/ssl/key.pem");
-  const cert = readFileSync("/ssl/server.crt");
+  const options: NestApplicationOptions = {};
+  if (process.env["SSL"] === "true") {
+    const key = readFileSync("/ssl/key.pem");
+    const cert = readFileSync("/ssl/server.crt");
+    options.httpsOptions = {
+      key, cert
+    }
+  }
 
-  const app = await NestFactory.create(AppModule, key && cert ? { httpsOptions: { key, cert } } : undefined);
+  const app = await NestFactory.create(AppModule, options);
 
   app.useGlobalPipes(
     new ValidationPipe({
