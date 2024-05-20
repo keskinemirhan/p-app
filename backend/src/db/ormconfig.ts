@@ -1,5 +1,6 @@
 import { Account } from "src/account/entities/account.entity";
 import { EmailVerification } from "src/auth/entities/email-verification.entity";
+import { FileDescriptor } from "src/file/file-descriptor.entity";
 import { Capability } from "src/profile/entities/capability.entity";
 import { Education } from "src/profile/entities/education.entity";
 import { Experience } from "src/profile/entities/experience.entity";
@@ -19,7 +20,10 @@ export const dataSourceOption: DataSourceOptions =
   port: Number(process.env["DB_PORT"]),
   synchronize: process.env["DB_SYNCHRONIZE"] === "true" ? true : false,
   host: process.env["DB_HOST"],
-  entities: [Account, EmailVerification, Capability, Education, Experience, Profile, Project, Reference, Review],
+  entities: [Account, EmailVerification, Capability,
+    Education, Experience, Profile,
+    Project, Reference, Review,
+    FileDescriptor],
   migrations: ["./src/db/migrations"],
   migrationsTableName: "migrations",
 }

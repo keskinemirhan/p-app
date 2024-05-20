@@ -7,6 +7,8 @@ import { MailerModule } from './mailer/mailer.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { dataSourceOption } from './db/ormconfig';
+import { MulterModule } from '@nestjs/platform-express';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot(dataSourceOption),
@@ -14,6 +16,10 @@ import { dataSourceOption } from './db/ormconfig';
     AccountModule,
     MailerModule,
     ProfileModule,
+    FileModule,
+    MulterModule.register({
+      dest: "./upload"
+    }),
   ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: envSchema,

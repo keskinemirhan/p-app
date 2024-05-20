@@ -23,6 +23,7 @@ export const exceptionCodes = {
   "REVIEW_NOT_FOUND": "Review not found",
   "CANNOT_REVIEW_ITSELF": "Cannot review owned profile",
   "CANNOT_REVIEW_TWICE": "Cannot review same profile twice",
+  "FILE_NOT_FOUND": "File not found"
 } as const;
 
 interface ClientException {
