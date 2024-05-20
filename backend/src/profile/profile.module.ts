@@ -23,12 +23,14 @@ import { ReferenceService } from "./service/reference.service";
 import { ReferenceController } from "./controller/reference.controller";
 import { ReviewController } from "./controller/review.controller";
 import { ReviewService } from "./service/review.service";
+import { FileModule } from "src/file/file.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Capability, Education, Experience, Profile, Project, Reference, Review]),
     forwardRef(() => AuthModule),
     forwardRef(() => AccountModule),
+    FileModule
   ],
   providers: [ProfileService, EducationService, ExperienceService, CapabilityService, ProjectService, ReferenceService, ReviewService],
   controllers: [ProfileController, EducationController, ExperienceController, CapabilityController, ProjectController, ReferenceController, ReviewController],

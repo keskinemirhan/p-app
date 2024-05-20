@@ -12,6 +12,9 @@ export class Profile {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
+  @Column({ nullable: true })
+  profileImage: string;
+
   @Column()
   name: string;
 
