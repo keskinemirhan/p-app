@@ -33,4 +33,11 @@ export class ProfileService extends CrudService<Profile> {
     return await this.getOne(where);
   }
 
+  async removeProfileImage(where: FindOptionsWhere<Profile>) {
+    const profile = await this.getOne(where);
+    await this.fileService.removeFile(profile.profileImage);
+    await this.update(where, { profileImage: null });
+    return await this.getOne(where);
+  }
+
 }

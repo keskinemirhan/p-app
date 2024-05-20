@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, ParseFilePipeBuilder, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Controller, Delete, Get, HttpStatus, ParseFilePipeBuilder, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { ProfileService } from "../profile.service";
 import { CurrentAccount } from "src/auth/decorators/account.decorator";
 import { Account } from "src/account/entities/account.entity";
@@ -37,6 +37,14 @@ export class ProfileController {
       })
   ) file: Express.Multer.File, @CurrentAccount() account: Account) {
     return this.profileService.uploadProfileImage({ account: { id: account.id } }, file);
+  }
+
+
+  @Role('account')
+  @Delete('profile-image')
+  async deleteProfileImage(@CurrentAccount() account: Account) {
+    return this.profileService.removeProfileImage({ account: { id: account.id } });
+
   }
 
   @Role("public")
