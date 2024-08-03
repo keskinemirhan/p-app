@@ -8,7 +8,6 @@ import { FileController } from "./file.controller";
   imports: [TypeOrmModule.forFeature([FileDescriptor])],
   providers: [FileService],
   controllers: [FileController],
-  exports: [FileService]
-
+  exports: [FileService],
 })
-export class FileModule { }
+export class FileModule {}

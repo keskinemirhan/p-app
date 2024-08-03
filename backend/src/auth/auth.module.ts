@@ -27,9 +27,13 @@ import { ProfileModule } from "src/profile/profile.module";
     }),
     TypeOrmModule.forFeature([EmailVerification]),
   ],
-  providers: [AuthService, TokenService, AdminAccountGuard, RegularAccountGuard],
+  providers: [
+    AuthService,
+    TokenService,
+    AdminAccountGuard,
+    RegularAccountGuard,
+  ],
   exports: [AdminAccountGuard, RegularAccountGuard, AuthService, TokenService],
   controllers: [AuthController],
-
 })
-export class AuthModule { }
+export class AuthModule {}

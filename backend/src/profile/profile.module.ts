@@ -27,15 +27,37 @@ import { FileModule } from "src/file/file.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Capability, Education, Experience, Profile, Project, Reference, Review]),
+    TypeOrmModule.forFeature([
+      Capability,
+      Education,
+      Experience,
+      Profile,
+      Project,
+      Reference,
+      Review,
+    ]),
     forwardRef(() => AuthModule),
     forwardRef(() => AccountModule),
-    FileModule
+    FileModule,
   ],
-  providers: [ProfileService, EducationService, ExperienceService, CapabilityService, ProjectService, ReferenceService, ReviewService],
-  controllers: [ProfileController, EducationController, ExperienceController, CapabilityController, ProjectController, ReferenceController, ReviewController],
-  exports: [ProfileService]
-
-
+  providers: [
+    ProfileService,
+    EducationService,
+    ExperienceService,
+    CapabilityService,
+    ProjectService,
+    ReferenceService,
+    ReviewService,
+  ],
+  controllers: [
+    ProfileController,
+    EducationController,
+    ExperienceController,
+    CapabilityController,
+    ProjectController,
+    ReferenceController,
+    ReviewController,
+  ],
+  exports: [ProfileService],
 })
-export class ProfileModule { }
+export class ProfileModule {}

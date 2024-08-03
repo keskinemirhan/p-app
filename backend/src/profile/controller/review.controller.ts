@@ -1,4 +1,14 @@
-import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+} from "@nestjs/common";
 import { Role } from "src/auth/decorators/role.decorator";
 import { ProfileService } from "../profile.service";
 import { CurrentAccount } from "src/auth/decorators/account.decorator";
@@ -16,10 +26,13 @@ import { ReqUpdateReview } from "../dto/req-update-review.dto";
 @ApiTags("Review")
 @Controller("review")
 export class ReviewController {
-  constructor(private reviewService: ReviewService, private profileService: ProfileService) { }
+  constructor(
+    private reviewService: ReviewService,
+    private profileService: ProfileService,
+  ) {}
 
   @ApiResponse({
-    type: ResGetallReview
+    type: ResGetallReview,
   })
   @ApiBody({
     type: ReqGetallReview,
@@ -27,9 +40,17 @@ export class ReviewController {
   @Role("public")
   @Get()
   async queryReview(@Body() ReqGetallReview: ReqGetallReview) {
-    const { targetId, authorId, reviewTitle, reviewText,
-      collaborativeRating, skillRating, communicativeRating,
-      take, page } = ReqGetallReview;
+    const {
+      targetId,
+      authorId,
+      reviewTitle,
+      reviewText,
+      collaborativeRating,
+      skillRating,
+      communicativeRating,
+      take,
+      page,
+    } = ReqGetallReview;
 
     const reviews = await this.reviewService.getAll(page, take, {
       where: {
@@ -44,7 +65,7 @@ export class ReviewController {
       relations: {
         author: true,
         target: true,
-      }
+      },
     });
     return reviews;
   }
@@ -57,14 +78,40 @@ export class ReviewController {
   })
   @Role("account")
   @Post()
-  async addReview(@Body() reqAddReview: ReqAddReview, @CurrentAccount() account: Account) {
-    const { targetProfileId, reviewTitle, reviewText, collaborativeRating, skillRating, communicativeRating } = reqAddReview;
-    const profile = await this.profileService.getOne({ account: { id: account.id } });
-    if (targetProfileId === profile.id) throw new BadRequestException(generateException("CANNOT_REVIEW_ITSELF"));
-    const existingReview = await this.reviewService.getAll(1, 1, { where: { target: { id: targetProfileId }, author: {id: profile.id} } });
-    if (existingReview.total !== 0) throw new BadRequestException(generateException("CANNOT_REVIEW_TWICE"));
-    const targetProfile = await this.profileService.getOne({ id: targetProfileId });
-    const review = await this.reviewService.create({ communicativeRating, skillRating, collaborativeRating, reviewText, reviewTitle, target: targetProfile, author: profile });
+  async addReview(
+    @Body() reqAddReview: ReqAddReview,
+    @CurrentAccount() account: Account,
+  ) {
+    const {
+      targetProfileId,
+      reviewTitle,
+      reviewText,
+      collaborativeRating,
+      skillRating,
+      communicativeRating,
+    } = reqAddReview;
+    const profile = await this.profileService.getOne({
+      account: { id: account.id },
+    });
+    if (targetProfileId === profile.id)
+      throw new BadRequestException(generateException("CANNOT_REVIEW_ITSELF"));
+    const existingReview = await this.reviewService.getAll(1, 1, {
+      where: { target: { id: targetProfileId }, author: { id: profile.id } },
+    });
+    if (existingReview.total !== 0)
+      throw new BadRequestException(generateException("CANNOT_REVIEW_TWICE"));
+    const targetProfile = await this.profileService.getOne({
+      id: targetProfileId,
+    });
+    const review = await this.reviewService.create({
+      communicativeRating,
+      skillRating,
+      collaborativeRating,
+      reviewText,
+      reviewTitle,
+      target: targetProfile,
+      author: profile,
+    });
     return this.reviewService.getOne({ id: review.id });
   }
 
@@ -76,10 +123,18 @@ export class ReviewController {
   })
   @Role("account")
   @Patch()
-  async updateReview(@Body() reqUpdateReview: ReqUpdateReview, @CurrentAccount() account: Account) {
-    const profile = await this.profileService.getOne({ account: { id: account.id } });
+  async updateReview(
+    @Body() reqUpdateReview: ReqUpdateReview,
+    @CurrentAccount() account: Account,
+  ) {
+    const profile = await this.profileService.getOne({
+      account: { id: account.id },
+    });
     const { id, ...model } = reqUpdateReview;
-    const updated = await this.reviewService.update({ id, author: { id: profile.id } }, model);
+    const updated = await this.reviewService.update(
+      { id, author: { id: profile.id } },
+      model,
+    );
     return await this.reviewService.getOne({ id: updated.id });
   }
 
@@ -92,11 +147,20 @@ export class ReviewController {
   })
   @Role("account")
   @Delete(":id")
-  async deleteReview(@Param("id") id: string, @CurrentAccount() account: Account) {
+  async deleteReview(
+    @Param("id") id: string,
+    @CurrentAccount() account: Account,
+  ) {
     const control = isUUID(id);
-    if (!control) throw new NotFoundException(generateException("REVIEW_NOT_FOUND"));
-    const profile = await this.profileService.getOne({ account: { id: account.id } });
-    const review = await this.reviewService.getOne({ author: { id: profile.id }, id });
+    if (!control)
+      throw new NotFoundException(generateException("REVIEW_NOT_FOUND"));
+    const profile = await this.profileService.getOne({
+      account: { id: account.id },
+    });
+    const review = await this.reviewService.getOne({
+      author: { id: profile.id },
+      id,
+    });
     await this.reviewService.remove({ id: review.id });
     return review;
   }

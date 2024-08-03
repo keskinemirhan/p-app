@@ -7,21 +7,29 @@ import { generateException } from "src/exception/exception";
 
 @Injectable()
 export class FileService {
-  constructor(@InjectRepository(FileDescriptor) private fileDescRepo: Repository<FileDescriptor>) { }
+  constructor(
+    @InjectRepository(FileDescriptor)
+    private fileDescRepo: Repository<FileDescriptor>,
+  ) {}
 
   async uploadFile(file: Express.Multer.File, accessInfo?: string) {
     const name = file.filename;
     const localPath = file.path;
     const mimeType = file.mimetype;
-    const createdFileDesc = await this.fileDescRepo.save({ name, localPath, accessInfo, mimeType });
+    const createdFileDesc = await this.fileDescRepo.save({
+      name,
+      localPath,
+      accessInfo,
+      mimeType,
+    });
     return createdFileDesc;
   }
 
   async removeFile(name: string) {
     const fileDesc = await this.fileDescRepo.findOne({
       where: {
-        name
-      }
+        name,
+      },
     });
 
     if (fileDesc) {
@@ -35,8 +43,8 @@ export class FileService {
 
   async getFile(name: string) {
     const file = await this.fileDescRepo.findOne({ where: { name } });
-    if (!file) throw new BadRequestException(generateException("FILE_NOT_FOUND"));
+    if (!file)
+      throw new BadRequestException(generateException("FILE_NOT_FOUND"));
     return { ...file, readStream: createReadStream(file.localPath) };
   }
-
 }

@@ -2,7 +2,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
 
 export class ReqUpdateAccountDto {
-
   @IsEmail()
   @IsOptional()
   @ApiProperty()
@@ -12,7 +11,6 @@ export class ReqUpdateAccountDto {
   @IsString()
   @ApiProperty()
   password: string;
-
 
   @IsOptional()
   @IsBoolean()

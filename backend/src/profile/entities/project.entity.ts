@@ -20,4 +20,3 @@ export class Project extends BaseAttribute {
   @Column()
   isParticipatingNow: boolean;
 }
-

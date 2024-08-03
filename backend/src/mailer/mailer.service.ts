@@ -3,12 +3,12 @@ import { ConfigService } from "@nestjs/config";
 import { Transporter, createTransport } from "nodemailer";
 import SMTPPool from "nodemailer/lib/smtp-pool";
 
-type MailOptions = {
+export type MailOptions = {
   from: string;
   to: string;
   subject: string;
   html: string;
-}
+};
 
 @Injectable()
 export class MailerService implements OnModuleInit {
@@ -17,11 +17,9 @@ export class MailerService implements OnModuleInit {
   constructor(private configService: ConfigService) {
     if (this.configService.get<string>("ENVIRONMENT") === "development") {
       this.transporter = {
-        sendMail: (args: any) => console.log(args)
-      }
-
-    }
-    else {
+        sendMail: (args: any) => console.log(args),
+      };
+    } else {
       this.transporter = createTransport({
         pool: true,
         host: this.configService.get("SMTP_HOST"),
@@ -30,17 +28,16 @@ export class MailerService implements OnModuleInit {
         auth: {
           user: this.configService.get("SMTP_USERNAME"),
           pass: this.configService.get("SMTP_PASSWORD"),
-        }
-      })
+        },
+      });
     }
   }
 
-  async onModuleInit() { }
+  async onModuleInit() {}
 
   async sendMail(mailOptions: MailOptions) {
     await this.transporter.sendMail({
-      ...mailOptions
-    })
+      ...mailOptions,
+    });
   }
-
 }

@@ -1,1 +1,1 @@
-export type AccountRole = 'admin' | 'account' | 'public';
+export type AccountRole = "admin" | "account" | "public";

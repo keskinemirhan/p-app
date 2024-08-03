@@ -5,7 +5,7 @@ export class ReqGetallAttr {
   @ApiProperty()
   @IsUUID()
   profileId: string;
-  
+
   @ApiProperty()
   @IsNumber()
   take: number;
@@ -13,5 +13,4 @@ export class ReqGetallAttr {
   @ApiProperty()
   @IsNumber()
   page: number;
-
 }

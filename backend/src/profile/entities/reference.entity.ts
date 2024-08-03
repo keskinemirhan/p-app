@@ -10,4 +10,3 @@ export class Reference extends BaseAttribute {
   @JoinColumn()
   referenceProfile: Relation<Profile>;
 }
-

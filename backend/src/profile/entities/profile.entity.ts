@@ -1,5 +1,11 @@
 import { Account } from "src/account/entities/account.entity";
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Capability } from "./capability.entity";
 import { Education } from "./education.entity";
 import { Experience } from "./experience.entity";
@@ -44,13 +50,15 @@ export class Profile {
   @Column()
   birthDate: Date;
 
-  @OneToOne(() => Account, (account) => account.profile, { onDelete: "CASCADE" })
+  @OneToOne(() => Account, (account) => account.profile, {
+    onDelete: "CASCADE",
+  })
   account: Account;
 
   @OneToMany(() => Education, (education) => education.profile)
   educations: Education[];
 
-  @OneToMany(() => Capability, (capability) => capability.profile,)
+  @OneToMany(() => Capability, (capability) => capability.profile)
   capabilities: Capability[];
 
   @OneToMany(() => Experience, (experience) => experience.profile)
@@ -67,4 +75,4 @@ export class Profile {
 
   @OneToMany(() => Review, (review) => review.target)
   targetReviews: Review[];
-}  
+}

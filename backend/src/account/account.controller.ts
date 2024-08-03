@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from "@nestjs/common";
 import { AccountService } from "./account.service";
 import { Role } from "src/auth/decorators/role.decorator";
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -14,59 +24,60 @@ import { generateException } from "src/exception/exception";
 @ApiTags("Account")
 @Controller("account")
 export class AccountController {
-  constructor(private accountService: AccountService) {
-  }
+  constructor(private accountService: AccountService) {}
 
   // -- Admin controllers
 
-  @Role('admin')
+  @Role("admin")
   @ApiResponse({ type: Account })
-  @Get('admin/:id')
+  @Get("admin/:id")
   async getAccount(@Param("id") id: string) {
     const control = isUUID(id);
-    if (!control) throw new NotFoundException(generateException("ACC_NOT_FOUND"));
+    if (!control)
+      throw new NotFoundException(generateException("ACC_NOT_FOUND"));
     return await this.accountService.getOne({ id });
   }
 
-  @Role('admin')
+  @Role("admin")
   @ApiResponse({ type: ResAccountQueryDto })
-  @Get('admin')
+  @Get("admin")
   async queryAccount(@Body() reqQueryAccountDto: ReqQueryAccountDto) {
     const { page, take } = reqQueryAccountDto;
     return await this.accountService.getAll(page, take);
   }
 
-  @Role('admin')
+  @Role("admin")
   @ApiResponse({ type: Account })
   @ApiBody({ type: ReqUpdateAccountDto })
   @Patch("admin/:id")
-  async updateAccount(@Param('id') id: string, @Body() updateDto: ReqUpdateAccountDto) {
+  async updateAccount(
+    @Param("id") id: string,
+    @Body() updateDto: ReqUpdateAccountDto,
+  ) {
     return await this.accountService.update(id, updateDto);
   }
 
-  @Role('admin')
+  @Role("admin")
   @ApiResponse({ type: Account })
   @ApiBody({ type: ReqCreateAccountDto })
-  @Post('admin')
+  @Post("admin")
   async createAccount(@Body() createDto: ReqCreateAccountDto) {
     return await this.accountService.create(createDto);
   }
 
-  @Role('admin')
+  @Role("admin")
   @ApiResponse({ type: Account })
-  @Delete('admin/:id')
-  async deleteAccount(@Param('id') id: string) {
+  @Delete("admin/:id")
+  async deleteAccount(@Param("id") id: string) {
     return await this.accountService.delete(id);
   }
 
   // -- User controllers (Only Reading - For Updates -> AuthController)
 
-  @Role('account')
+  @Role("account")
   @ApiResponse({ type: Account })
-  @Get('me')
+  @Get("me")
   async getMyAccount(@CurrentAccount() account: Account) {
-    return await this.accountService.getOne({ id: account.id })
+    return await this.accountService.getOne({ id: account.id });
   }
 }
-
-

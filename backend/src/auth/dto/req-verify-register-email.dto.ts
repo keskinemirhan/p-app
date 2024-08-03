@@ -1,8 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsAlpha, IsAlphanumeric, IsJWT, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import {
+  IsAlpha,
+  IsAlphanumeric,
+  IsJWT,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+} from "class-validator";
 
 export class ReqVerifyRegisterEmailDto {
-  
   @ApiProperty()
   @IsUUID()
   verificationId: string;

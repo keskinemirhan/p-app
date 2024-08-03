@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+} from "@nestjs/common";
 import { Role } from "src/auth/decorators/role.decorator";
 import { ProfileService } from "../profile.service";
 import { ReqGetallAttr } from "../dto/req-getall-attr.dto";
@@ -15,10 +23,13 @@ import { ReqAddCapability } from "../dto/req-add-capability.dto";
 @ApiTags("Capability")
 @Controller("capability")
 export class CapabilityController {
-  constructor(private capabilityService: CapabilityService, private profileService: ProfileService) { }
+  constructor(
+    private capabilityService: CapabilityService,
+    private profileService: ProfileService,
+  ) {}
 
   @ApiResponse({
-    type: ResGetallCapability
+    type: ResGetallCapability,
   })
   @ApiBody({
     type: ReqGetallAttr,
@@ -27,7 +38,10 @@ export class CapabilityController {
   @Get()
   async getCapabilityByProfileId(@Body() reqGetallAttr: ReqGetallAttr) {
     const { profileId, take, page } = reqGetallAttr;
-    const accounts = await this.capabilityService.getAll(page, take, { where: { profile: { id: profileId } }, order: { name: "ASC" } });
+    const accounts = await this.capabilityService.getAll(page, take, {
+      where: { profile: { id: profileId } },
+      order: { name: "ASC" },
+    });
     return accounts;
   }
 
@@ -39,9 +53,14 @@ export class CapabilityController {
   })
   @Role("account")
   @Post()
-  async addCapability(@Body() reqAddCapability: ReqAddCapability, @CurrentAccount() account: Account) {
+  async addCapability(
+    @Body() reqAddCapability: ReqAddCapability,
+    @CurrentAccount() account: Account,
+  ) {
     const { name } = reqAddCapability;
-    const profile = await this.profileService.getOne({ account: { id: account.id } });
+    const profile = await this.profileService.getOne({
+      account: { id: account.id },
+    });
     const capability = await this.capabilityService.create({ name, profile });
     return this.capabilityService.getOne({ id: capability.id });
   }
@@ -55,11 +74,20 @@ export class CapabilityController {
   })
   @Role("account")
   @Delete(":id")
-  async deleteCapability(@Param("id") id: string, @CurrentAccount() account: Account) {
+  async deleteCapability(
+    @Param("id") id: string,
+    @CurrentAccount() account: Account,
+  ) {
     const control = isUUID(id);
-    if (!control) throw new NotFoundException(generateException("CAPABILITY_NOT_FOUND"));
-    const profile = await this.profileService.getOne({ account: { id: account.id } });
-    const capability = await this.capabilityService.getOne({ profile: { id: profile.id }, id });
+    if (!control)
+      throw new NotFoundException(generateException("CAPABILITY_NOT_FOUND"));
+    const profile = await this.profileService.getOne({
+      account: { id: account.id },
+    });
+    const capability = await this.capabilityService.getOne({
+      profile: { id: profile.id },
+      id,
+    });
     await this.capabilityService.remove({ id: capability.id });
     return capability;
   }

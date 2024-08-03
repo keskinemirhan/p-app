@@ -1,18 +1,24 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { Profile } from "./profile.entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class Review {
   @ApiProperty()
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ApiProperty({type: () => Profile})
+  @ApiProperty({ type: () => Profile })
   @ManyToOne(() => Profile)
   author: Profile;
 
-  @ApiProperty({type: () => Profile})
+  @ApiProperty({ type: () => Profile })
   @ApiProperty()
   @ManyToOne(() => Profile)
   target: Profile;

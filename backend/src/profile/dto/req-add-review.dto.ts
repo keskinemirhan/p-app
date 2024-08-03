@@ -4,7 +4,7 @@ import { IsInt, IsString, IsUUID, Max, Min } from "class-validator";
 export class ReqAddReview {
   @ApiProperty()
   @IsUUID()
-  targetProfileId: string ;
+  targetProfileId: string;
 
   @ApiProperty()
   @IsString()

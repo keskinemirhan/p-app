@@ -5,5 +5,4 @@ import { Experience } from "../entities/experience.entity";
 export class ResGetallExperience extends QueryResultPartialDto {
   @ApiProperty({ isArray: true, type: Experience })
   result: Experience[];
-
 }

@@ -5,8 +5,10 @@ import { Reference } from "../entities/reference.entity";
 import { CrudService } from "src/model/crud-service";
 
 @Injectable()
-export class ReferenceService extends CrudService<Reference>  {
-  constructor(@InjectRepository(Reference) private referenceRepo: Repository<Reference>) {
-    super(referenceRepo,"REFERENCE_NOT_FOUND"); 
+export class ReferenceService extends CrudService<Reference> {
+  constructor(
+    @InjectRepository(Reference) private referenceRepo: Repository<Reference>,
+  ) {
+    super(referenceRepo, "REFERENCE_NOT_FOUND");
   }
 }

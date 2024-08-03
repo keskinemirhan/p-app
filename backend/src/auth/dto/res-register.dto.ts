@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class ResRegisterDto {
-
   @ApiProperty()
   access_token: string;
 
@@ -10,4 +9,4 @@ export class ResRegisterDto {
 
   @ApiProperty()
   verificationId: string;
-} 
+}

@@ -1,7 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude, Expose } from "class-transformer";
 import { Profile } from "src/profile/entities/profile.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 
 @Entity()
 export class Account {
@@ -23,7 +31,6 @@ export class Account {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
 
   @ApiProperty()
   @Column({ default: false })

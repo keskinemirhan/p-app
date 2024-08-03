@@ -14,6 +14,6 @@ import { ProfileModule } from "src/profile/profile.module";
   ],
   providers: [AccountService],
   exports: [AccountService],
-  controllers: [AccountController]
+  controllers: [AccountController],
 })
-export class AccountModule { }
+export class AccountModule {}

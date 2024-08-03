@@ -9,9 +9,7 @@ export class BaseAttribute {
   id: string;
 
   @ManyToOne(() => Profile, (profile) => profile.capabilities, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   profile: Profile;
-
-
 }

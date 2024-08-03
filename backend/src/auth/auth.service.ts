@@ -1,20 +1,20 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { compare } from 'bcrypt';
-import { AccountService } from 'src/account/account.service';
-import { generateException } from 'src/exception/exception';
-import { TokenService } from './token.service';
-import { MailerService } from 'src/mailer/mailer.service';
-import { ConfigService } from '@nestjs/config';
-import { InjectRepository } from '@nestjs/typeorm';
-import { EmailVerification } from './entities/email-verification.entity';
-import { Repository } from 'typeorm';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { compare } from "bcrypt";
+import { AccountService } from "src/account/account.service";
+import { generateException } from "src/exception/exception";
+import { TokenService } from "./token.service";
+import { MailerService } from "src/mailer/mailer.service";
+import { ConfigService } from "@nestjs/config";
+import { InjectRepository } from "@nestjs/typeorm";
+import { EmailVerification } from "./entities/email-verification.entity";
+import { Repository } from "typeorm";
 
 export type EmailVerificationPayload = {
   verificationId: string;
   accountId: string;
 };
 
-export type VerificationType = 'register-verification';
+export type VerificationType = "register-verification";
 
 @Injectable()
 export class AuthService {
@@ -28,7 +28,7 @@ export class AuthService {
     @InjectRepository(EmailVerification)
     private verificationRepo: Repository<EmailVerification>,
   ) {
-    this.appEmailAddress = this.configService.get<string>('APP_EMAIL');
+    this.appEmailAddress = this.configService.get<string>("APP_EMAIL");
   }
 
   async createSessionTokenPair(accountId: string) {
@@ -40,7 +40,7 @@ export class AuthService {
     const account = await this.accountService.getOne({ email });
     const result = await compare(password, account.password);
     if (!result)
-      throw new BadRequestException(generateException('INVALID_CREDS'));
+      throw new BadRequestException(generateException("INVALID_CREDS"));
     const tokenPair = await this.tokenService.createPair({ id: account.id });
     return tokenPair;
   }
@@ -59,24 +59,24 @@ export class AuthService {
 
     if (!verification)
       throw new BadRequestException(
-        generateException('VERIFICATION_NOT_FOUND'),
+        generateException("VERIFICATION_NOT_FOUND"),
       );
     if (verification.type !== type)
-      throw new BadRequestException(generateException('WRONG_VERIFICATION'));
+      throw new BadRequestException(generateException("WRONG_VERIFICATION"));
     if (verification.code !== code) {
       await this.verificationRepo.remove(verification);
       throw new BadRequestException(
-        generateException('INVALID_VERIFICATION_CODE'),
+        generateException("INVALID_VERIFICATION_CODE"),
       );
     }
     if (verification.verified)
-      throw new BadRequestException(generateException('ALREADY_VERIFIED'));
+      throw new BadRequestException(generateException("ALREADY_VERIFIED"));
 
     const timeDifferenceInSeconds = Math.round(
       (Date.now() - new Date(verification.createdAt).getTime()) / 1000,
     );
     if (timeDifferenceInSeconds >= expireSeconds)
-      throw new BadRequestException(generateException('VERIFICATION_EXPIRED'));
+      throw new BadRequestException(generateException("VERIFICATION_EXPIRED"));
 
     verification.verified = true;
     return await this.verificationRepo.save(verification);
@@ -87,16 +87,17 @@ export class AuthService {
     const existingVerification = await this.verificationRepo.findOne({
       where: {
         email,
-        type: 'register-verification'
-      }
-    })
+        type: "register-verification",
+      },
+    });
 
-    if (existingVerification) await this.verificationRepo.remove(existingVerification);
+    if (existingVerification)
+      await this.verificationRepo.remove(existingVerification);
 
     const verification = await this.verificationRepo.save({
       email: email,
       data,
-      type: 'register-verification',
+      type: "register-verification",
       code,
       verified: false,
     });
@@ -104,7 +105,7 @@ export class AuthService {
     this.mailerService.sendMail({
       from: this.appEmailAddress,
       to: email,
-      subject: 'Register Email Verification',
+      subject: "Register Email Verification",
       html: code,
     });
 
@@ -112,7 +113,7 @@ export class AuthService {
   }
 
   generateVerificationCode() {
-    let code = '';
+    let code = "";
     for (let i = 0; i < 6; i++) {
       const digit = Math.floor(Math.random() * 10);
       code += String(digit);

@@ -5,5 +5,4 @@ export class ReqAddCapability {
   @ApiProperty()
   @IsString()
   name: string;
-
 }

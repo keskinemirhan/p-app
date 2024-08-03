@@ -3,7 +3,6 @@ import { QueryService } from "./query-service";
 import { ExceptionCode } from "src/exception/exception";
 
 export class CrudService<T> extends QueryService<T> {
-
   constructor(repo: Repository<T>, notFoundCode: ExceptionCode) {
     super(repo, notFoundCode);
   }
@@ -12,7 +11,6 @@ export class CrudService<T> extends QueryService<T> {
     const entity = await this.getOne(where);
     Object.assign(entity, model);
     return await this.repo.save(entity);
-
   }
 
   async create(model: DeepPartial<T>) {
@@ -23,5 +21,4 @@ export class CrudService<T> extends QueryService<T> {
     const entities = await this.repo.find({ where });
     return await this.repo.remove(entities);
   }
-
 }

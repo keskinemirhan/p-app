@@ -1,4 +1,4 @@
-import { Column, Entity} from "typeorm";
+import { Column, Entity } from "typeorm";
 import { BaseAttribute } from "./base-attr.entity";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -9,11 +9,10 @@ export class Education extends BaseAttribute {
   name: string;
 
   @ApiProperty()
-  @Column({ type: 'date' })
+  @Column({ type: "date" })
   startDate: Date;
 
   @ApiProperty()
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: "date", nullable: true })
   endDate: Date;
-
 }

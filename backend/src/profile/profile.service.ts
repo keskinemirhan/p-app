@@ -5,7 +5,6 @@ import { FindOptionsWhere, Repository } from "typeorm";
 import { CrudService } from "src/model/crud-service";
 import { FileService } from "src/file/file.service";
 
-
 @Injectable()
 export class ProfileService extends CrudService<Profile> {
   constructor(
@@ -24,7 +23,10 @@ export class ProfileService extends CrudService<Profile> {
     return profiles;
   }
 
-  async uploadProfileImage(where: FindOptionsWhere<Profile>, file: Express.Multer.File) {
+  async uploadProfileImage(
+    where: FindOptionsWhere<Profile>,
+    file: Express.Multer.File,
+  ) {
     const profile = await this.getOne(where);
     await this.fileService.removeFile(profile.profileImage);
     await this.fileService.uploadFile(file);
@@ -39,5 +41,4 @@ export class ProfileService extends CrudService<Profile> {
     await this.update(where, { profileImage: null });
     return await this.getOne(where);
   }
-
 }

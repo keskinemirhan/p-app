@@ -5,5 +5,4 @@ import { Account } from "../entities/account.entity";
 export class ResAccountQueryDto extends QueryResultPartialDto {
   @ApiProperty({ isArray: true, type: Account })
   result: Account[];
-
 }

@@ -1,5 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsNumber, IsOptional, IsString, IsUUID, Max, Min } from "class-validator";
+import {
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Max,
+  Min,
+} from "class-validator";
 
 export class ReqGetallReview {
   @ApiProperty()

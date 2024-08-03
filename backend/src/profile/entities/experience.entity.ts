@@ -20,6 +20,4 @@ export class Experience extends BaseAttribute {
   @ApiProperty()
   @Column({ type: "date", nullable: true })
   endDate: Date;
-
-
 }

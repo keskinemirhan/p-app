@@ -11,8 +11,7 @@ import { Review } from "src/profile/entities/review.entity";
 import { DataSource, DataSourceOptions } from "typeorm";
 require("dotenv").config();
 
-export const dataSourceOption: DataSourceOptions =
-{
+export const dataSourceOption: DataSourceOptions = {
   type: "postgres",
   database: process.env["DB_NAME"],
   username: process.env["DB_USERNAME"],
@@ -20,12 +19,20 @@ export const dataSourceOption: DataSourceOptions =
   port: Number(process.env["DB_PORT"]),
   synchronize: process.env["DB_SYNCHRONIZE"] === "true" ? true : false,
   host: process.env["DB_HOST"],
-  entities: [Account, EmailVerification, Capability,
-    Education, Experience, Profile,
-    Project, Reference, Review,
-    FileDescriptor],
+  entities: [
+    Account,
+    EmailVerification,
+    Capability,
+    Education,
+    Experience,
+    Profile,
+    Project,
+    Reference,
+    Review,
+    FileDescriptor,
+  ],
   migrations: ["./src/db/migrations"],
   migrationsTableName: "migrations",
-}
+};
 
 export const dataSource = new DataSource(dataSourceOption);
