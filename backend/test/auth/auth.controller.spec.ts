@@ -1,4 +1,4 @@
-import { INestApplication } from "@nestjs/common";
+import { TestingModule } from "@nestjs/testing";
 import { compare } from "bcrypt";
 import { Account } from "src/account/entities/account.entity";
 import { AuthController } from "src/auth/auth.controller";
@@ -14,17 +14,17 @@ import { EntityManager } from "typeorm";
 
 describe("AuthController", () => {
   let manager: EntityManager;
-  let appRef: INestApplication;
+  let moduleRef: TestingModule;
   let testHelper: TestHelper;
   let authController: AuthController;
   let tokenService: TokenService;
 
   beforeAll(async () => {
     testHelper = new TestHelper();
-    appRef = await testHelper.createTestingApplication();
+    moduleRef = await testHelper.createTestingModule();
     manager = testHelper.getManager();
-    authController = appRef.get<AuthController>(AuthController);
-    tokenService = appRef.get<TokenService>(TokenService);
+    authController = moduleRef.get<AuthController>(AuthController);
+    tokenService = moduleRef.get<TokenService>(TokenService);
   });
   afterAll(async () => {
     await testHelper.closeApp();
@@ -209,7 +209,7 @@ describe("AuthController", () => {
         where: { id: responseSecond.verificationId },
       });
       let wrongCode = "111111";
-      const authService = appRef.get<AuthService>(AuthService);
+      const authService = moduleRef.get<AuthService>(AuthService);
       while (wrongCode === emailVerificationFirst.code)
         wrongCode = authService.generateVerificationCode();
 

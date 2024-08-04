@@ -4,7 +4,6 @@ import { DataSource } from "typeorm";
 import { AccountService } from "src/account/account.service";
 import { MailerService, MailOptions } from "src/mailer/mailer.service";
 import { EntityManager } from "typeorm";
-import { INestApplication, ValidationPipe } from "@nestjs/common";
 
 type InvalidValues = { [k: string]: any[] };
 type validValues = { [k: string]: any };
@@ -13,8 +12,6 @@ export class TestHelper {
   private mails: MailOptions[] = [];
   private moduleRef: TestingModule;
   private moduleCreated: boolean = false;
-  private appCreated: boolean = false;
-  private app: INestApplication;
   private dataSource: DataSource;
 
   async createTestingModule(): Promise<TestingModule> {
@@ -38,19 +35,6 @@ export class TestHelper {
     return this.moduleRef;
   }
 
-  async createTestingApplication(): Promise<INestApplication> {
-    if (this.appCreated) throw new Error("An app already created");
-    if (!this.moduleCreated) await this.createTestingModule();
-    this.app = this.moduleRef.createNestApplication();
-    this.app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        transform: true,
-      })
-    );
-    return this.app;
-  }
-
   async clearDatabase(): Promise<void> {
     if (!this.moduleCreated) throw Error("Testing module is not created");
     await this.dataSource.synchronize(true);
@@ -59,7 +43,7 @@ export class TestHelper {
   async createTestingAccount(
     email: string,
     password: string,
-    moduleRef: TestingModule
+    moduleRef: TestingModule,
   ) {
     if (!this.moduleCreated) throw Error("Testing module is not created");
     const accountService = moduleRef.get<AccountService>(AccountService);
@@ -82,7 +66,6 @@ export class TestHelper {
   }
   async closeApp(): Promise<void> {
     if (this.moduleCreated) await this.moduleRef.close();
-    if (this.appCreated) await this.app.close();
   }
 
   invalidObjectCrossing(
