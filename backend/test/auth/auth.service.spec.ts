@@ -17,7 +17,7 @@ describe("AuthService", () => {
 
   beforeAll(async () => {
     testHelper = new TestHelper();
-    moduleRef = await testHelper.createTestApplication();
+    moduleRef = await testHelper.createTestingModule();
     authService = moduleRef.get<AuthService>(AuthService);
     tokenService = moduleRef.get<TokenService>(TokenService);
     accountService = moduleRef.get<AccountService>(AccountService);
@@ -43,10 +43,10 @@ describe("AuthService", () => {
       expect(tokenPair.refresh_token).toBeDefined();
 
       expect(
-        tokenService.verifyRefreshToken(tokenPair.refresh_token),
+        tokenService.verifyRefreshToken(tokenPair.refresh_token)
       ).resolves.not.toThrow();
       expect(
-        tokenService.verifyAccessToken(tokenPair.access_token),
+        tokenService.verifyAccessToken(tokenPair.access_token)
       ).resolves.not.toThrow();
     });
   });
@@ -65,16 +65,16 @@ describe("AuthService", () => {
       await expect(authService.login(email, password)).resolves.not.toThrow();
       const tokenPair = await authService.login(email, password);
       expect(
-        tokenService.verifyRefreshToken(tokenPair.refresh_token),
+        tokenService.verifyRefreshToken(tokenPair.refresh_token)
       ).resolves.not.toThrow();
       expect(
-        tokenService.verifyAccessToken(tokenPair.access_token),
+        tokenService.verifyAccessToken(tokenPair.access_token)
       ).resolves.not.toThrow();
     });
 
     it("Should throw error if email is invalid", async () => {
       await expect(
-        authService.login("wrong@mail.com", password),
+        authService.login("wrong@mail.com", password)
       ).rejects.toThrow();
     });
 
@@ -84,7 +84,7 @@ describe("AuthService", () => {
 
     it("Should throw error if credentials are invalid", async () => {
       await expect(
-        authService.login("wrong@wrong.com", "wrong"),
+        authService.login("wrong@wrong.com", "wrong")
       ).rejects.toThrow();
     });
   });
@@ -170,7 +170,7 @@ describe("AuthService", () => {
           code: "123457",
           type: "register-verification",
           expireSeconds: 180,
-        }),
+        })
       ).rejects.toThrow();
       await expect(
         authService.verifyVerification({
@@ -179,7 +179,7 @@ describe("AuthService", () => {
           code: "123456",
           type: "register-verification",
           expireSeconds: 180,
-        }),
+        })
       ).rejects.toThrow();
       await expect(
         authService.verifyVerification({
@@ -188,7 +188,7 @@ describe("AuthService", () => {
           code: "123456",
           type: "login-verification" as VerificationType,
           expireSeconds: 180,
-        }),
+        })
       ).rejects.toThrow();
       await expect(
         authService.verifyVerification({
@@ -197,7 +197,7 @@ describe("AuthService", () => {
           code: "123456",
           type: "register-verification",
           expireSeconds: 180,
-        }),
+        })
       ).rejects.toThrow();
       await expect(
         authService.verifyVerification({
@@ -206,7 +206,7 @@ describe("AuthService", () => {
           code: "123457",
           type: "login-verification" as VerificationType,
           expireSeconds: 180,
-        }),
+        })
       ).rejects.toThrow();
     });
 
@@ -219,7 +219,7 @@ describe("AuthService", () => {
         .getManager()
         .findOne(EmailVerification, { where: { email: "expired@mail.com" } });
       verification.createdAt = new Date(
-        new Date().getTime() - 240 * 1000,
+        new Date().getTime() - 240 * 1000
       ).toUTCString();
       await manager.save(EmailVerification, verification);
       await expect(
@@ -229,7 +229,7 @@ describe("AuthService", () => {
           code: "123456",
           type: "register-verification",
           expireSeconds: 180,
-        }),
+        })
       ).rejects.toThrow();
     });
 

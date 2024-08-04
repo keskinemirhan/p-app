@@ -11,7 +11,7 @@ describe("TokenService", () => {
 
   beforeAll(async () => {
     testHelper = new TestHelper();
-    moduleRef = await testHelper.createTestApplication();
+    moduleRef = await testHelper.createTestingModule();
     await testHelper.clearDatabase();
     tokenService = moduleRef.get<TokenService>(TokenService);
     jwtService = moduleRef.get<JwtService>(JwtService);
@@ -95,10 +95,10 @@ describe("TokenService", () => {
 
     it("Should return payload", async () => {
       await expect(
-        tokenService.verifyToken(access_token),
+        tokenService.verifyToken(access_token)
       ).resolves.not.toThrow();
       await expect(
-        tokenService.verifyToken(access_token),
+        tokenService.verifyToken(access_token)
       ).resolves.toMatchObject({ data: "data" });
     });
   });
@@ -116,7 +116,7 @@ describe("TokenService", () => {
     });
     it("Should accept valid access token", async () => {
       expect(
-        tokenService.verifyAccessToken(access_token),
+        tokenService.verifyAccessToken(access_token)
       ).resolves.not.toThrow();
     });
 
@@ -128,10 +128,10 @@ describe("TokenService", () => {
 
     it("Should return payload", async () => {
       await expect(
-        tokenService.verifyAccessToken(access_token),
+        tokenService.verifyAccessToken(access_token)
       ).resolves.not.toThrow();
       await expect(
-        tokenService.verifyAccessToken(access_token),
+        tokenService.verifyAccessToken(access_token)
       ).resolves.toMatchObject({ data: "data" });
     });
   });
@@ -149,7 +149,7 @@ describe("TokenService", () => {
     });
     it("Should accept valid refresh_token token", async () => {
       expect(
-        tokenService.verifyRefreshToken(refresh_token),
+        tokenService.verifyRefreshToken(refresh_token)
       ).resolves.not.toThrow();
     });
 
@@ -161,10 +161,10 @@ describe("TokenService", () => {
 
     it("Should return payload", async () => {
       await expect(
-        tokenService.verifyRefreshToken(refresh_token),
+        tokenService.verifyRefreshToken(refresh_token)
       ).resolves.not.toThrow();
       await expect(
-        tokenService.verifyRefreshToken(refresh_token),
+        tokenService.verifyRefreshToken(refresh_token)
       ).resolves.toMatchObject({ data: "data" });
     });
   });

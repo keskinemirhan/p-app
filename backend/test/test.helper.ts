@@ -4,14 +4,21 @@ import { DataSource } from "typeorm";
 import { AccountService } from "src/account/account.service";
 import { MailerService, MailOptions } from "src/mailer/mailer.service";
 import { EntityManager } from "typeorm";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
+
+type InvalidValues = { [k: string]: any[] };
+type validValues = { [k: string]: any };
 
 export class TestHelper {
   private mails: MailOptions[] = [];
   private moduleRef: TestingModule;
   private moduleCreated: boolean = false;
+  private appCreated: boolean = false;
+  private app: INestApplication;
   private dataSource: DataSource;
 
-  async createTestApplication(): Promise<TestingModule> {
+  async createTestingModule(): Promise<TestingModule> {
+    if (this.moduleCreated) throw new Error("A testing module already created");
     process.env["DB_NAME"] = "testing";
     process.env["DB_TYPE"] = "postgres";
     process.env["DB_SYNCHRONIZE"] = "true";
@@ -25,9 +32,23 @@ export class TestHelper {
         sendMail: (mailOptions: MailOptions) => this.mails.push(mailOptions),
       })
       .compile();
+
     this.dataSource = this.moduleRef.get<DataSource>(DataSource);
     this.moduleCreated = true;
     return this.moduleRef;
+  }
+
+  async createTestingApplication(): Promise<INestApplication> {
+    if (this.appCreated) throw new Error("An app already created");
+    if (!this.moduleCreated) await this.createTestingModule();
+    this.app = this.moduleRef.createNestApplication();
+    this.app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+      })
+    );
+    return this.app;
   }
 
   async clearDatabase(): Promise<void> {
@@ -38,7 +59,7 @@ export class TestHelper {
   async createTestingAccount(
     email: string,
     password: string,
-    moduleRef: TestingModule,
+    moduleRef: TestingModule
   ) {
     if (!this.moduleCreated) throw Error("Testing module is not created");
     const accountService = moduleRef.get<AccountService>(AccountService);
@@ -60,6 +81,25 @@ export class TestHelper {
     return this.dataSource.createEntityManager();
   }
   async closeApp(): Promise<void> {
-    await this.moduleRef.close();
+    if (this.moduleCreated) await this.moduleRef.close();
+    if (this.appCreated) await this.app.close();
+  }
+
+  invalidObjectCrossing(
+    validValues: validValues,
+    invalidValues: InvalidValues
+  ) {
+    const objects = [];
+    for (const ikey in invalidValues) {
+      for (const value in invalidValues[ikey]) {
+        const obj = {};
+        obj[ikey] = value;
+        for (const key in validValues) {
+          if (key !== ikey) obj[key] = validValues[key];
+        }
+        objects.push(obj);
+      }
+    }
+    return objects;
   }
 }
