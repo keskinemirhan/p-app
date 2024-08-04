@@ -3,7 +3,7 @@ import { AuthService, VerificationType } from "src/auth/auth.service";
 import { TokenService } from "src/auth/token.service";
 import { TestHelper } from "test/test.helper";
 import { AccountService } from "src/account/account.service";
-import { MailerService, MailOptions } from "src/mailer/mailer.service";
+import { MailOptions } from "src/mailer/mailer.service";
 import { EntityManager } from "typeorm";
 import { EmailVerification } from "src/auth/entities/email-verification.entity";
 
@@ -11,7 +11,6 @@ describe("AuthService", () => {
   let authService: AuthService;
   let tokenService: TokenService;
   let accountService: AccountService;
-  let mailerService: MailerService;
   let moduleRef: TestingModule;
   let testHelper: TestHelper;
 
@@ -21,7 +20,6 @@ describe("AuthService", () => {
     authService = moduleRef.get<AuthService>(AuthService);
     tokenService = moduleRef.get<TokenService>(TokenService);
     accountService = moduleRef.get<AccountService>(AccountService);
-    mailerService = moduleRef.get<MailerService>(MailerService);
   });
 
   afterAll(async () => {
@@ -147,7 +145,6 @@ describe("AuthService", () => {
   });
 
   describe(".verifyVerification", () => {
-    let verification: EmailVerification;
     let manager: EntityManager;
 
     beforeAll(async () => {
