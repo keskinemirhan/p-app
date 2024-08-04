@@ -87,13 +87,13 @@ export class TestHelper {
 
   invalidObjectCrossing(
     validValues: validValues,
-    invalidValues: InvalidValues
+    invalidValues: InvalidValues,
   ) {
     const objects = [];
     for (const ikey in invalidValues) {
-      for (const value in invalidValues[ikey]) {
+      for (const ivalue of invalidValues[ikey]) {
         const obj = {};
-        obj[ikey] = value;
+        obj[ikey] = ivalue;
         for (const key in validValues) {
           if (key !== ikey) obj[key] = validValues[key];
         }
