@@ -5,8 +5,8 @@ import { AccountService } from "src/account/account.service";
 import { MailerService, MailOptions } from "src/mailer/mailer.service";
 import { EntityManager } from "typeorm";
 
-type InvalidValues = { [k: string]: any[] };
-type validValues = { [k: string]: any };
+type InjectionFields = { [k: string]: any[] };
+type TemplateObject = { [k: string]: any };
 
 export class TestHelper {
   private mails: MailOptions[] = [];
@@ -43,7 +43,7 @@ export class TestHelper {
   async createTestingAccount(
     email: string,
     password: string,
-    moduleRef: TestingModule,
+    moduleRef: TestingModule
   ) {
     if (!this.moduleCreated) throw Error("Testing module is not created");
     const accountService = moduleRef.get<AccountService>(AccountService);
@@ -68,17 +68,17 @@ export class TestHelper {
     if (this.moduleCreated) await this.moduleRef.close();
   }
 
-  invalidObjectCrossing(
-    validValues: validValues,
-    invalidValues: InvalidValues,
+  fieldInjectMultiplication(
+    templateObj: TemplateObject,
+    injectionFields: InjectionFields
   ) {
     const objects = [];
-    for (const ikey in invalidValues) {
-      for (const ivalue of invalidValues[ikey]) {
+    for (const ikey in injectionFields) {
+      for (const ivalue of injectionFields[ikey]) {
         const obj = {};
         obj[ikey] = ivalue;
-        for (const key in validValues) {
-          if (key !== ikey) obj[key] = validValues[key];
+        for (const key in templateObj) {
+          if (key !== ikey) obj[key] = templateObj[key];
         }
         objects.push(obj);
       }

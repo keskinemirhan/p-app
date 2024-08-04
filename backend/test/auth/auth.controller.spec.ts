@@ -213,7 +213,7 @@ describe("AuthController", () => {
       while (wrongCode === emailVerificationFirst.code)
         wrongCode = authService.generateVerificationCode();
 
-      const testInputs = testHelper.invalidObjectCrossing(
+      const testInputs = testHelper.fieldInjectMultiplication(
         {
           verificationId: responseFirst.verificationId,
           access_token: responseFirst.access_token,
@@ -284,7 +284,7 @@ describe("AuthController", () => {
     });
 
     it("Should not login if invalid input given", async () => {
-      const wrongInputs = testHelper.invalidObjectCrossing(
+      const wrongInputs = testHelper.fieldInjectMultiplication(
         {
           email: "mail1@mail.com",
           password: "StrongPassword*1",
