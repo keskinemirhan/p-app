@@ -1,4 +1,10 @@
-import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+} from "@nestjs/common";
 import { AccountService } from "src/account/account.service";
 import { AuthService } from "./auth.service";
 import { TokenService } from "./token.service";
@@ -7,7 +13,12 @@ import { ReqVerifyRegisterEmailDto } from "./dto/req-verify-register-email.dto";
 import { ReqCreateRegisterEmailVerificationDto } from "./dto/req-create-register-email-verification.dto";
 import { generateException } from "src/exception/exception";
 import { ConfigService } from "@nestjs/config";
-import { ApiBody, ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from "@nestjs/swagger";
 import { ResRegisterDto } from "./dto/res-register.dto";
 import { ReqLoginDto } from "./dto/req-login.dto";
 import { ResLoginDto } from "./dto/res-login.dto";
@@ -39,6 +50,7 @@ export class AuthController {
   @ApiBody({
     type: ReqRegisterDto,
   })
+  @HttpCode(201)
   @Post("register")
   async register(@Body() body: ReqRegisterDto) {
     const account = await this.accountService.create({
@@ -67,10 +79,11 @@ export class AuthController {
     };
   }
 
-  @ApiCreatedResponse()
+  @ApiOkResponse()
   @ApiBody({
     type: ReqVerifyRegisterEmailDto,
   })
+  @HttpCode(200)
   @Post("register/verify-email")
   async verifyRegisterEmail(@Body() body: ReqVerifyRegisterEmailDto) {
     const payload = await this.tokenService.verifyAccessToken(
@@ -95,6 +108,7 @@ export class AuthController {
   @ApiBody({
     type: ReqCreateRegisterEmailVerificationDto,
   })
+  @HttpCode(201)
   @Post("register/create-verification")
   async createRegisterEmailVerification(
     @Body() body: ReqCreateRegisterEmailVerificationDto,
@@ -120,12 +134,13 @@ export class AuthController {
     };
   }
 
-  @ApiCreatedResponse({
+  @ApiOkResponse({
     type: ResLoginDto,
   })
   @ApiBody({
     type: ReqLoginDto,
   })
+  @HttpCode(200)
   @Post("login")
   async login(@Body() body: ReqLoginDto) {
     const res = await this.authService.login(body.email, body.password);
@@ -138,6 +153,7 @@ export class AuthController {
   @ApiBody({
     type: ReqRefreshDto,
   })
+  @HttpCode(201)
   @Post("refresh")
   async refresh(@Body() body: ReqRefreshDto) {
     const payload = await this.tokenService.verifyRefreshToken(
